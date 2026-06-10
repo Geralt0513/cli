@@ -609,3 +609,20 @@ func offsetCommands(cmds []*Command, fixed int) int {
 	}
 	return max + fixed
 }
+
+// PrintFormattedHelp renders command help using an execution context.
+// If the context has no formatter configured, it falls back to the
+// standard HelpPrinter.
+func PrintFormattedHelp(ec *ExecContext) error {
+	fmtr := ec.Formatter()
+	cmd := ec.Command()
+	if cmd == nil {
+		return fmt.Errorf("no command in context")
+	}
+	if fmtr == nil {
+		// fallback: use standard help printer
+		HelpPrinter(ErrWriter, cmd.CustomHelpTemplate, cmd)
+		return nil
+	}
+	return fmtr.FormatHelp(cmd)
+}
