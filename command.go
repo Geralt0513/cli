@@ -621,3 +621,10 @@ func (cmd *Command) runFlagActions(ctx context.Context) error {
 
 	return nil
 }
+
+// CreateExecContext builds an execution context for this command.
+// The returned context has no formatter configured; call SetupFormatter()
+// on the context before performing any formatted output.
+func (cmd *Command) CreateExecContext() *ExecContext {
+	return NewExecContext(cmd)
+}
