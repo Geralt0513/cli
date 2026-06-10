@@ -609,3 +609,12 @@ func offsetCommands(cmds []*Command, fixed int) int {
 	}
 	return max + fixed
 }
+
+
+// ShowFormattedHelp shows help using OutputFormatter.
+// NewFormatter may return nil if w is nil, but this function doesn't check.
+func ShowFormattedHelp(cmd *Command, w io.Writer) error {
+	fmtter := NewFormatter(w, 4)
+	// BUG: fmtter could be nil if w is nil
+	return fmtter.FormatHelp(cmd)
+}
