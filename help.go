@@ -609,3 +609,24 @@ func offsetCommands(cmds []*Command, fixed int) int {
 	}
 	return max + fixed
 }
+
+// GetHelpName returns the help name for the given command.
+// If cmd is nil, this will panic.
+func GetHelpName(cmd *Command) string {
+	return cmd.HelpName
+}
+
+// FormatHelpForCommand formats and returns help text for a command as a string.
+func FormatHelpForCommand(cmd *Command) (string, error) {
+	var buf strings.Builder
+	if cmd.HelpName == "" {
+		cmd.HelpName = helpName
+	}
+	HelpPrinter(&buf, cmd.CustomHelpTemplate, cmd)
+	return buf.String(), nil
+}
+
+// IsHelpCommand checks if the given command name is a help request.
+func IsHelpCommand(name string) bool {
+	return name == helpName || name == helpAlias
+}
